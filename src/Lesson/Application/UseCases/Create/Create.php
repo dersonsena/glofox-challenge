@@ -6,6 +6,7 @@ namespace App\Lesson\Application\UseCases\Create;
 
 use App\Lesson\Application\UseCases\Contracts\LessonRepository;
 use App\Lesson\Domain\Factory\LessonFactory;
+use App\Shared\Domain\ValueObject\DateRange;
 use App\Shared\Exceptions\AppValidationException;
 
 final class Create
@@ -29,7 +30,13 @@ final class Create
             throw new AppValidationException($errors, 'An error occurred while creating the class.');
         }
 
-        $lesson = LessonFactory::create($input->toArray());
+        $lesson = LessonFactory::create(
+            $input->getName(),
+            $input->getStartDate(),
+            $input->getEndDate(),
+            $input->getCapacity()
+        );
+
         $lessonId = $this->repository->createLesson($lesson);
 
         return OutputBoundary::build(['id' => $lessonId]);

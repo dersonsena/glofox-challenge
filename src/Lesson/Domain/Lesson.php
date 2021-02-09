@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Lesson\Domain;
 
 use App\Shared\Domain\Entity;
+use App\Shared\Domain\ValueObject\DateRange;
 use DateTimeInterface;
 
 final class Lesson extends Entity
@@ -14,20 +15,20 @@ final class Lesson extends Entity
     protected DateTimeInterface $endDate;
     protected int $capacity;
 
+    public function __construct(string $name, DateRange $dateRange, int $capacity)
+    {
+        $this->name = $name;
+        $this->startDate = $dateRange->getStartDate();
+        $this->endDate = $dateRange->getEndDate();
+        $this->capacity = $capacity;
+    }
+
     /**
      * @return string
      */
     public function getName(): string
     {
         return $this->name;
-    }
-
-    /**
-     * @param string $name
-     */
-    public function setName(string $name): void
-    {
-        $this->name = $name;
     }
 
     /**
@@ -39,14 +40,6 @@ final class Lesson extends Entity
     }
 
     /**
-     * @param DateTimeInterface $startDate
-     */
-    public function setStartDate(DateTimeInterface $startDate): void
-    {
-        $this->startDate = $startDate;
-    }
-
-    /**
      * @return DateTimeInterface
      */
     public function getEndDate(): DateTimeInterface
@@ -55,26 +48,10 @@ final class Lesson extends Entity
     }
 
     /**
-     * @param DateTimeInterface $endDate
-     */
-    public function setEndDate(DateTimeInterface $endDate): void
-    {
-        $this->endDate = $endDate;
-    }
-
-    /**
      * @return int
      */
     public function getCapacity(): int
     {
         return $this->capacity;
-    }
-
-    /**
-     * @param int $capacity
-     */
-    public function setCapacity(int $capacity): void
-    {
-        $this->capacity = $capacity;
     }
 }

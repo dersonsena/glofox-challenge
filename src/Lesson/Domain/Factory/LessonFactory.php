@@ -5,30 +5,12 @@ declare(strict_types=1);
 namespace App\Lesson\Domain\Factory;
 
 use App\Lesson\Domain\Lesson;
-use DateTimeImmutable;
+use App\Shared\Domain\ValueObject\DateRange;
 
 final class LessonFactory
 {
-    public static function create(array $values = []): Lesson
+    public static function create(string $name, string $startDate, string $endDate, int $capacity = 1): Lesson
     {
-        $entity = new Lesson();
-
-        if (empty($values)) {
-            return $entity;
-        }
-
-        if (isset($values['startDate'])) {
-            $entity->setStartDate(new DateTimeImmutable($values['startDate']));
-            unset($values['startDate']);
-        }
-
-        if (isset($values['endDate'])) {
-            $entity->setEndDate(new DateTimeImmutable($values['endDate']));
-            unset($values['endDate']);
-        }
-
-        $entity->fill($values);
-
-        return $entity;
+        return new Lesson($name, new DateRange($startDate, $endDate), $capacity);
     }
 }
