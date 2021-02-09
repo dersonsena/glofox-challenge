@@ -2,12 +2,11 @@
 
 return [
     'externalApi' => [],
-    'database' => [
-        'host' => $_ENV['DB_HOST'],
-        'port' => $_ENV['DB_PORT'],
-        'username' => $_ENV['DB_USERNAME'],
-        'password' => $_ENV['DB_PASSWORD'],
-        'dbname' => $_ENV['DB_DATABASE'],
-        'charset' => 'utf8'
+    'mongodb' => [
+        'host' => $_ENV['MONGODB_HOST'],
+        'port' => $_ENV['MONGODB_PORT'],
+        'username' => $_ENV['MONGODB_USERNAME'],
+        'password' => $_ENV['MONGODB_PASSWORD'],
+        'dbname' => $_ENV['MONGODB_DATABASE']
     ]
 ];

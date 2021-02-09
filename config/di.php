@@ -1,26 +1,37 @@
 <?php
 
+use App\Lesson\Application\UseCases\Contracts\LessonRepository as LessonRepositoryInterface;
+use App\Lesson\Infra\Repositories\LessonRepository;
+use App\Shared\Contracts\DatabaseConnection;
+use App\Shared\Contracts\ValidatorTool;
+use App\Shared\Infra\Adapters\MongoDBConnection;
+use App\Shared\Infra\Adapters\RespectValidation;
+use DI\Container;
 use DI\ContainerBuilder;
 
 $containerBuilder = new ContainerBuilder();
 
-$containerBuilder->addDefinitions([]);
+$containerBuilder->addDefinitions([
+    // Repositories
+    LessonRepositoryInterface::class => DI\autowire(LessonRepository::class),
+
+    // Adapter
+    ValidatorTool::class => DI\autowire(RespectValidation::class),
+    DatabaseConnection::class => DI\get('mongodb')
+]);
 
 $container = $containerBuilder->build();
 
-$container->set('config', function() {
+$container->set('config', function () {
     return require __DIR__ . DS . 'config.php';
 });
 
-/*$container->set('database', function(Container $container) {
-    $dbConfig = $container->get('config')['database'];
-    $dsn = "mysql:host={$dbConfig['host']};port={$dbConfig['port']};dbname={$dbConfig['dbname']};charset={$dbConfig['charset']}";
+$container->set('mongodb', function (Container $container) {
+    $conf = $container->get('config')['mongodb'];
 
-    $pdo = new PDO($dsn, $dbConfig['username'], $dbConfig['password'], [
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-        PDO::ATTR_PERSISTENT => TRUE
-    ]);
+    $mongoDbClient = new MongoDB\Client(
+        "mongodb://{$conf['username']}:{$conf['password']}@{$conf['host']}:{$conf['port']}/?retryWrites=true&w=majority"
+    );
 
-    return new MySQLConnection($pdo);
-});*/
+    return new MongoDBConnection($mongoDbClient, $conf['dbname']);
+});

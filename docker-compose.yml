@@ -26,19 +26,18 @@ services:
       - db
 
   db:
-    image: mysql:5.7
-    container_name: ${PROJECT_NAME}-db
-    command: --default-authentication-plugin=mysql_native_password --explicit_defaults_for_timestamp=1
+    container_name: ${PROJECT_NAME}-mongodb
+    image: mongo
     restart: always
+    volumes:
+      - ./.docker/data/mongodb:/data/db
     ports:
-      - "${DOCKER_MYSQL_PORT}:3306"
-    environment:
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-      MYSQL_DATABASE: ${DB_DATABASE}
+      - '${DOCKER_MONGODB_PORT}:27017'
     networks:
       - glofox-network
-    volumes:
-      - ./.docker/data/mysql:/var/lib/mysql
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGODB_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_PASSWORD}
 
 networks:
   glofox-network:

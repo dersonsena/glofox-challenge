@@ -9,6 +9,9 @@ export
 .PHONY: help
 .DEFAULT_GOAL := help
 
+help:  ## Display this help
+	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target>\033[0m\n"} /^[a-zA-Z_-]+:.*?##/ { printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
+
 ##@ Docker
 up: ## Start all project containers
 	@echo -e "\n~~> Starting up containers for ${PROJECT_NAME}..."
@@ -67,14 +70,14 @@ fixer: ## Run PHP Code Fixer Tool
 
 ##@ Database
 
+db-in: # Enter in MongoDB Container
+	@docker exec -it "${PROJECT_NAME}-mongodb" mongo -u "${MONGODB_USERNAME}" -p "${MONGODB_PASSWORD}"
+
 db-backup: ## Backup database
 	@docker exec "${PROJECT_NAME}-db" /usr/bin/mysqldump -u root -p"${DB_PASSWORD}" "${DB_DATABASE}" > backup.sql
 
 db-restore: ## Restore database
 	@cat backup.sql | docker exec -i "${PROJECT_NAME}-db" /usr/bin/mysql -u root -p"${DB_PASSWORD}" "${DB_DATABASE}"
-
-help:  ## Display this help
-	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target>\033[0m\n"} /^[a-zA-Z_-]+:.*?##/ { printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
 
 ##@ PHP Unit - Tests
 
@@ -89,11 +92,3 @@ test-coverage: ## Run the all suite test and generate the Code Coverage
 
 test-unit: ## Run the application unit tests only
 	@docker exec -it "${PROJECT_NAME}-app" composer run test-unit
-
-##@ Redis
-
-redis: ## Runs a redis cli
-	@docker exec -it "${PROJECT_NAME}-redis" redis-cli -h "${REDIS_HOST}" -p "${REDIS_PORT}" -a "${REDIS_PASSWORD}"
-
-redis-monitor: ## Runs a redis monitor
-	@docker run -it --network collinson-test_collinson-network --rm redis redis-cli -h "${REDIS_HOST}" -p "${REDIS_PORT}" -a "${REDIS_PASSWORD}" MONITOR
