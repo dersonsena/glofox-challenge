@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Auth\Domain\Factory;
 
 use App\Auth\Domain\User;
-use App\Shared\Domain\ValueObject\Email;
+use App\Shared\Domain\ValueObjects\Email;
 
 final class UserFactory
 {

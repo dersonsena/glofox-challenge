@@ -6,7 +6,6 @@ namespace App\Lesson\Application\UseCases\Create;
 
 use App\Lesson\Application\UseCases\Contracts\LessonRepository;
 use App\Lesson\Domain\Factory\LessonFactory;
-use App\Shared\Domain\ValueObject\DateRange;
 use App\Shared\Exceptions\AppValidationException;
 
 final class Create

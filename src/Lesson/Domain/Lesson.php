@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Lesson\Domain;
 
 use App\Shared\Domain\Entity;
-use App\Shared\Domain\ValueObject\DateRange;
+use App\Shared\Domain\ValueObjects\DateRange;
 use DateTimeInterface;
 
 final class Lesson extends Entity
