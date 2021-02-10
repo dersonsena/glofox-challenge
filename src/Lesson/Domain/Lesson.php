@@ -6,6 +6,7 @@ namespace App\Lesson\Domain;
 
 use App\Shared\Domain\Entity;
 use App\Shared\Domain\ValueObjects\DateRange;
+use App\Shared\Exceptions\AppValidationException;
 use DateTimeInterface;
 
 final class Lesson extends Entity
@@ -17,6 +18,10 @@ final class Lesson extends Entity
 
     public function __construct(string $name, DateRange $dateRange, int $capacity)
     {
+        if ($capacity === 0) {
+            throw new AppValidationException(['capacity' => 'min-value'], 'You must provide at least 1 capacity');
+        }
+
         $this->name = $name;
         $this->startDate = $dateRange->getStartDate();
         $this->endDate = $dateRange->getEndDate();
