@@ -8,14 +8,14 @@ use App\Shared\Helpers\DTO;
 
 final class InputBoundary extends DTO
 {
-    protected string $memberId;
-    protected string $lessonId;
-    protected string $date;
+    protected ?string $memberId = '';
+    protected ?string $lessonId = '';
+    protected ?string $date = '';
 
     /**
      * @return string
      */
-    public function getMemberId(): string
+    public function getMemberId(): ?string
     {
         return $this->memberId;
     }
@@ -23,7 +23,7 @@ final class InputBoundary extends DTO
     /**
      * @return string
      */
-    public function getLessonId(): string
+    public function getLessonId(): ?string
     {
         return $this->lessonId;
     }
@@ -31,7 +31,7 @@ final class InputBoundary extends DTO
     /**
      * @return string
      */
-    public function getDate(): string
+    public function getDate(): ?string
     {
         return $this->date;
     }
