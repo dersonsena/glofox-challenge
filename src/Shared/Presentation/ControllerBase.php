@@ -37,7 +37,6 @@ abstract class ControllerBase
             return $response
                 ->withHeader('Content-Type', 'application/json')
                 ->withStatus(200);
-
         } catch (Throwable $e) {
             return $this->answerWithError($e);
         }

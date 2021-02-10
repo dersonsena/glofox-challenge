@@ -1,7 +1,6 @@
 <?php
 
 return [
-    'externalApi' => [],
     'mongodb' => [
         'host' => $_ENV['MONGODB_HOST'],
         'port' => $_ENV['MONGODB_PORT'],
