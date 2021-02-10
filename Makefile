@@ -71,13 +71,16 @@ fixer: ## Run PHP Code Fixer Tool
 ##@ Database
 
 db-in: # Enter in MongoDB Container
-	@docker exec -it "${PROJECT_NAME}-mongodb" mongo -u "${MONGODB_USERNAME}" -p "${MONGODB_PASSWORD}"
+	@docker exec -it "${PROJECT_NAME}-mongodb" mongo glofox -u "${MONGODB_USERNAME}" -p "${MONGODB_PASSWORD}" --authenticationDatabase admin
 
-db-backup: ## Backup database
-	@docker exec "${PROJECT_NAME}-db" /usr/bin/mysqldump -u root -p"${DB_PASSWORD}" "${DB_DATABASE}" > backup.sql
+db-list-lessons: ## List lessons
+	@docker exec -it "${PROJECT_NAME}-mongodb" mongo glofox -u "${MONGODB_USERNAME}" -p "${MONGODB_PASSWORD}" --authenticationDatabase admin --eval "db.lessons.find();"
 
-db-restore: ## Restore database
-	@cat backup.sql | docker exec -i "${PROJECT_NAME}-db" /usr/bin/mysql -u root -p"${DB_PASSWORD}" "${DB_DATABASE}"
+db-list-members: ## List members
+	@docker exec -it "${PROJECT_NAME}-mongodb" mongo glofox -u "${MONGODB_USERNAME}" -p "${MONGODB_PASSWORD}" --authenticationDatabase admin --eval "db.members.find();"
+
+db-import-members: ## Import members into mongodb
+	@docker exec -it "${PROJECT_NAME}-mongodb" mongo glofox -u "${MONGODB_USERNAME}" -p "${MONGODB_PASSWORD}" --authenticationDatabase admin --eval "db.members.insert([{ name: 'John', gender: 'MALE' },{ name: 'Bill', gender: 'MALE' },{ name: 'Sarah', gender: 'FEMALE' },{ name: 'Mary', gender: 'FEMALE' },{ name: 'Patric', gender: 'MALE' }]);"
 
 ##@ PHP Unit - Tests
 

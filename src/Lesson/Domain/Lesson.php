@@ -54,4 +54,13 @@ final class Lesson extends Entity
     {
         return $this->capacity;
     }
+
+    public function dateIsWithinRange(DateTimeInterface $date): bool
+    {
+        if ($date <= $this->getStartDate() && $date >= $this->getEndDate()) {
+            return false;
+        }
+
+        return true;
+    }
 }

@@ -9,21 +9,21 @@ use JsonSerializable;
 
 abstract class Entity implements JsonSerializable
 {
-    protected int $id;
+    protected string $id;
 
     /**
-     * @return int
+     * @return string
      */
-    public function getId(): int
+    public function getId(): string
     {
         return $this->id;
     }
 
     /**
-     * @param int $id
+     * @param string $id
      * @return Entity
      */
-    public function setId(int $id): Entity
+    public function setId(string $id): Entity
     {
         $this->id = $id;
         return $this;

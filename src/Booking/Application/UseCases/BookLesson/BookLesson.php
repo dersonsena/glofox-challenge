@@ -42,24 +42,15 @@ final class BookLesson
         $lesson = $this->lessonRepository->findLessonById($input->getLessonId());
         $date = new DateTimeImmutable($input->getDate());
 
-        if ($date < $lesson->getStartDate() || $date > $lesson->getEndDate()) {
-            throw new AppValidationException(
-                ['date' => 'out-of-range'],
-                'The date informed is out of range the class.'
-            );
-        }
+        $member->setId($input->getMemberId());
+        $lesson->setId($input->getLessonId());
 
-        if (!$this->bookingRepository->haveVacancyAvailable($lesson)) {
-            throw new AppValidationException(
-                ['capacity' => 'sold-out'],
-                'Vacancies sold out for this class'
-            );
-        }
-
-        $this->bookingRepository->bookLesson($member, $lesson, $date);
+        $bookingId = $this->bookingRepository->bookLesson($member, $lesson, $date);
 
         return OutputBoundary::build([
+            'bookingId' => $bookingId,
             'member' => $member->toArray(),
+            'lesson' => $lesson->toArray(),
             'date' => $date->format(DateTimeInterface::ATOM)
         ]);
     }

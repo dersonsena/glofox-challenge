@@ -25,6 +25,11 @@ final class LessonRepository implements LessonRepositoryAlias
 
     public function findLessonById(string $id): Lesson
     {
-        return LessonFactory::create('xpto', '2021-01-01', '2021-01-10', 10);
+        $data = $this->db->findById('lessons', $id);
+
+        $startDate = substr($data['startDate'], 0, 10);
+        $endDate = substr($data['endDate'], 0, 10);
+
+        return LessonFactory::create($data['name'], $startDate, $endDate, $data['capacity']);
     }
 }
