@@ -9,4 +9,5 @@ use App\Lesson\Domain\Lesson;
 interface LessonRepository
 {
     public function createLesson(Lesson $lesson): string;
+    public function findLessonById(string $id): Lesson;
 }
