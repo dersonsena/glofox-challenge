@@ -62,10 +62,10 @@ final class Lesson extends Entity
 
     public function dateIsWithinRange(DateTimeInterface $date): bool
     {
-        if ($date <= $this->getStartDate() && $date >= $this->getEndDate()) {
-            return false;
+        if ($date >= $this->getStartDate() && $date <= $this->getEndDate()) {
+            return true;
         }
 
-        return true;
+        return false;
     }
 }
