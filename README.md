@@ -9,8 +9,10 @@ Kilderson Sena - dersonsena@gmail.com
 - PHP 7.4+;
 - Unix Enviroment;
 - [Composer](https://getcomposer.org);
-- [Slim Framework 4](https://www.slimframework.com);
 - [Docker](https://www.docker.com);
+
+## Technologies
+- [Slim Framework 4](https://www.slimframework.com);
 - Standard JSON Response Payload with [JSend](https://github.com/omniti-labs/jsend);
 
 ## Instructions for run the project
@@ -81,7 +83,7 @@ I used the Clean Architecture concepts and designed this project based flow belo
 
 ## Running Endpoints
 
-### [POST] http://localhost:8000/classes (Create Classes)
+### [POST] http://localhost:8000/api/v1/classes (Create Classes)
 
 #### Request Payload
 
@@ -112,10 +114,10 @@ I used the Clean Architecture concepts and designed this project based flow belo
 2. You must provide both dates in format `yyyy-mm-dd`;
 3. If you provide a `start_date` greater than `end_date` you should see a response payload with date range error;
 
-### [POST] http://localhost:8000/bookings (Book for a class)
+### [POST] http://localhost:8000/api/v1/bookings (Book for a class)
 
-#### Request Payload
-
+#### Context
+To execute the Booking Request Payload is necessary get ids from members and lessons.
 Run the command below to get the member and lesson list from the storage:
 
 ```shell
@@ -123,7 +125,7 @@ $ make db-list-lessons
 $ make db-list-members
 ```
 
-In output commands you can see the lessons and members id's to be used in Request Payload below:
+#### Request Payload
 
 ```json
 {
@@ -167,3 +169,11 @@ In output commands you can see the lessons and members id's to be used in Reques
 5. You'll not be able to place the booking date outside the class range;
 6. A member will not be able to make a booking for the same class and day that he has previously booked;
 7. The member will not be able to make the booking if the places are exhausted (capacity limit reached);
+
+## Run Unit Tests
+
+Run the command above to perform unit test suite:
+
+```bash
+$ make test-unit
+```
